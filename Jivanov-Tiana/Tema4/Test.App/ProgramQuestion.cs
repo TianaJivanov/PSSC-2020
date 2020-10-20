@@ -12,7 +12,7 @@ namespace Test.App
         static void Main(string[] args)
         {
             var tag = "c#".Split(',').ToList();
-            var cmd = new CreateQuestionCmd("Does dontDestroyOnLoad only work a single time?", "Can someone give me concrete details?", tag);
+            var cmd = new CreateQuestionCmd("Does dontDestroyOnLoad only work a single time?", "Can someone give me concrete details? ", tag);
             var result = CreateQuestion(cmd);
 
             result.Match(
@@ -51,19 +51,19 @@ namespace Test.App
         {
             if (string.IsNullOrEmpty(createQuestionCommand.Title))
             {
-                var errors = new List<string>() { "Question title invalid" };
+                var errors = new List<string>() { "Invalid question title" };
                 return new QuestionValidationFailed(errors);
             }
 
             if (string.IsNullOrEmpty(createQuestionCommand.Body))
             {
-                var errors = new List<string>() { "Question body invalid" };
+                var errors = new List<string>() { "Invalid question body" };
                 return new QuestionValidationFailed(errors);
             }
 
             if (createQuestionCommand.Tags.Count==0)
             {
-                var errors = new List<string>() { "Question tag invalid" };
+                var errors = new List<string>() { "Invalid question tags" };
                 return new QuestionValidationFailed(errors);
             }
 
