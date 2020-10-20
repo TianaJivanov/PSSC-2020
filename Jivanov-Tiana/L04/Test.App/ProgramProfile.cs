@@ -6,9 +6,9 @@ using static Profile.Domain.CreateProfileWorkflow.CreateProfileResult;
 
 namespace Test.App
 {
-    class Program
+    class ProgramProfile
     {
-        static void Main(string[] args)
+        static void Main2(string[] args)
         {
             var cmd = new CreateProfileCmd("Ion", string.Empty, "Ionescu", "ion.inonescu@company.com");
             var result = CreateProfile(cmd);
