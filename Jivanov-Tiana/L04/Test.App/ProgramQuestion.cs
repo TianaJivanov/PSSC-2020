@@ -1,8 +1,9 @@
-﻿using Question.Domain.PostQuestionWorkflow;
+﻿ using Profile.Domain.CreateQuestionWorkflow;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using static Question.Domain.PostQuestionWorkflow.PostQuestionResult;
+using static Profile.Domain.CreateQuestionWorkflow.CreateQuestionResult;
 
 namespace Test.App
 {
@@ -10,9 +11,9 @@ namespace Test.App
     {
         static void Main(string[] args)
         {
-            List<string> tags = new List<string> {"CSS3", "SCSS"};
-            var cmd = new PostQuestionCmd("Does dontDestroyOnLoad only work a single time?", "Can someone give me concrete details? ", tags);
-            var result = PostQuestion(cmd);
+            var tag = "c#".Split(',').ToList();
+            var cmd = new CreateQuestionCmd("Does dontDestroyOnLoad only work a single time?", "Can someone give me concrete details?", tag);
+            var result = CreateQuestion(cmd);
 
             result.Match(
                     ProcessQuestionPosted,
@@ -23,52 +24,56 @@ namespace Test.App
             Console.ReadLine();
         }
 
-        private static IPostQuestionResult ProcessInvalidQuestion(QuestionValidationFailed validationErrors)
+        private static ICreateQuestionResult ProcessInvalidQuestion(QuestionValidationFailed validationErrors)
         {
-            Console.WriteLine("Validation failed: ");
+            Console.WriteLine("Question validation failed: ");
             foreach (var error in validationErrors.ValidationErrors)
             {
                 Console.WriteLine(error);
             }
             return validationErrors;
         }
+           
 
-        private static IPostQuestionResult ProcessQuestionNotPosted(QuestionNotPosted questionNotCreatedResult)
+        private static ICreateQuestionResult ProcessQuestionNotPosted(QuestionNotPosted questionNotPostedResult)
         {
-            Console.WriteLine($"Question wasn't created: {questionNotCreatedResult.Reason}");
-            return questionNotCreatedResult;
+            Console.WriteLine($"Question not posted: {questionNotPostedResult.Reason}");
+            return questionNotPostedResult;
         }
 
-        private static IPostQuestionResult ProcessQuestionPosted(QuestionPosted question)
+        private static ICreateQuestionResult ProcessQuestionPosted(QuestionPosted question)
         {
-            Console.WriteLine($"Question {question.QuestionId}");
+            Console.WriteLine($"Question: {question.Title}");
             return question;
         }
 
-        public static IPostQuestionResult PostQuestion(PostQuestionCmd postQuestionCommand)
+        public static ICreateQuestionResult CreateQuestion(CreateQuestionCmd createQuestionCommand)
         {
-            if (string.IsNullOrWhiteSpace(postQuestionCommand.Title))
+            if (string.IsNullOrEmpty(createQuestionCommand.Title))
             {
-                var errors = new List<string>() { "Title is not valid" };
+                var errors = new List<string>() { "Question title invalid" };
                 return new QuestionValidationFailed(errors);
             }
 
-            if (string.IsNullOrWhiteSpace(postQuestionCommand.Body))
+            if (string.IsNullOrEmpty(createQuestionCommand.Body))
             {
-                var errors = new List<string>() { "Description is not valid" };
+                var errors = new List<string>() { "Question body invalid" };
                 return new QuestionValidationFailed(errors);
             }
-      
 
-            if (new Random().Next(10) > 1)
+            if (createQuestionCommand.Tags.Count==0)
             {
-                return new QuestionNotPosted("Question verification failed");
+                var errors = new List<string>() { "Question tag invalid" };
+                return new QuestionValidationFailed(errors);
             }
 
-            var questionId = Guid.NewGuid();
-            var result = new QuestionPosted(questionId, postQuestionCommand.Title, postQuestionCommand.Body, postQuestionCommand.Tags);
 
-            //execute logic
+            //if (new Random().Next(10) > 1)
+            //{
+            //    return new QuestionNotPosted("Title could not be verified");
+            //}
+
+            var result = new QuestionPosted(createQuestionCommand.Title);
             return result;
         }
     }

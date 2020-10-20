@@ -6,18 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="C:\Users\Tiana\Downloads\T4\ProgramQuestion.cs" Link="ProgramQuestion.cs" />
+    <PackageReference Include="Diff.Match.Patch" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharp.Choices" Version="1.1.0" />
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Profile.Domain\Profile.Domain.csproj" />
-    <ProjectReference Include="..\Question.Domain\Question.Domain.csproj" />
+    <ProjectReference Include="..\Profile.Domain\Question.Domain.csproj" />
   </ItemGroup>
 
 </Project>
