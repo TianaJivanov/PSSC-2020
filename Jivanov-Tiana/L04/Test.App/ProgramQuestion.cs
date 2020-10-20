@@ -12,7 +12,7 @@ namespace Test.App
         static void Main(string[] args)
         {
             var tag = "c#".Split(',').ToList();
-            var cmd = new CreateQuestionCmd("Does dontDestroyOnLoad only work a single time?", "Can someone give me concrete details? ", tag);
+            var cmd = new CreateQuestionCmd(""Does dontDestroyOnLoad only work a single time ? ", "Can someone give me concrete details ? ", tag);
             var result = CreateQuestion(cmd);
 
             result.Match(
